@@ -20,9 +20,7 @@ class HiveRepo {
       );
       box.add(data);
       data.save();
-    } else {
-      // Handle the case where dateTime is null
-    }
+    } else {}
   }
 
   editCurrentAlarm(Future<DateTime?> date, int index) async {

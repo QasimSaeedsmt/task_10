@@ -38,7 +38,6 @@ class AlarmRepo {
       await Alarm.set(alarmSettings: alarmSettings);
 
       if (_subscriptions.containsKey(id)) {
-        // If a subscription for this id already exists, cancel it before creating a new one
         _subscriptions[id]?.cancel();
       }
       _subscriptions[id] = Alarm.ringStream.stream.listen((alarmSettings) {
@@ -48,19 +47,15 @@ class AlarmRepo {
           throw Exception(e);
         }
       });
-    } else {
-      // Handle the case where dateTime is null
-    }
+    } else {}
   }
 
   void cancelAlarmSubscription(int id) {
-    // Cancel the subscription for the given id when it's no longer needed
     _subscriptions[id]?.cancel();
     _subscriptions.remove(id);
   }
 
   void cancelAllSubscriptions() {
-    // Cancel all subscriptions when they are no longer needed
     _subscriptions.forEach((id, subscription) {
       subscription.cancel();
     });
