@@ -34,8 +34,6 @@ class HiveRepo {
       String formattedTime = formatter.format(dateTime);
 
       data[index].date = formattedTime;
-    } else {
-      // Handle the case where dateTime is null
-    }
+    } else {}
   }
 }

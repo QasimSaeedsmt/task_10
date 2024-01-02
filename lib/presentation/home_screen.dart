@@ -8,7 +8,6 @@ import 'package:task_10/businessLogic/bloc/alarmBloc/alarm_event.dart';
 import 'package:task_10/constants/constants_resources.dart';
 import 'package:task_10/constants/string_resources.dart';
 import 'package:task_10/extension/condition_extension.dart';
-import 'package:task_10/presentation/widgets/leading_widget.dart';
 import 'package:task_10/repo/alarm_repo.dart';
 import 'package:task_10/utils/custom_dialog.dart';
 
@@ -103,8 +102,31 @@ class _HomeScreenState extends State<HomeScreen> {
                         left: DimensionResources.D_4,
                         right: DimensionResources.D_4,
                       ),
-                      leading: LeadingWidget(
-                          index: index, isFuture: isFuture, uniqueID: uniqueID),
+                      leading: IconButton(
+                        onPressed: isFuture
+                            ? () {
+                                Future<DateTime?> alarmDateTime =
+                                    selectDateTime(context);
+                                context.read<AlarmBloc>().add(EditCurrentAlarm(
+                                      index: index,
+                                      uniqueID: uniqueID,
+                                      dateOfAlarm: alarmDateTime,
+                                    ));
+                                AlarmRepo()
+                                    .setAlarm(alarmDateTime, uniqueID, context);
+                              }
+                            : () {
+                                CustomDialog().showCustomDialog(
+                                    context,
+                                    false,
+                                    StringResources.TIME_NOT_CHANGING_CONTENT,
+                                    true);
+                              },
+                        icon: Icon(
+                          Icons.access_alarm,
+                          color: isFuture ? Colors.blue : Colors.grey,
+                        ),
+                      ),
                       trailing: isFuture
                           ? IconButton(
                               onPressed: () async {
